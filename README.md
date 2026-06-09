@@ -30,7 +30,22 @@
 
 ---
 
-## 安裝方式
+## 安裝前準備
+
+使用這些 skills 需要先在電腦上安裝幾個工具。
+
+👉 **[完整安裝指南](docs/installation-guide.md)**
+
+| 工具 | 用途 | 必要性 |
+|-----|------|-------|
+| [Claude Code](https://claude.ai/download) | 執行 skills 的主程式 | 必須 |
+| [Git](https://git-scm.com/download/win) | 存檔 / 讀檔版本管理 | 必須 |
+| [Python](https://www.python.org/downloads/) | Excel 匯出、資料處理 | 選擇性 |
+| [Node.js](https://nodejs.org/) | 網頁工具、自動測試 | 選擇性 |
+
+**最省事的做法：Claude Code + Git + Python 三個全裝，90% 情況都夠用。**
+
+## 安裝 Skill
 
 1. 點選上方你要的 `.skill` 檔案
 2. 按右上角 **Download raw file** 下載到電腦
