@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git *)",
+      "Bash(zip *)",
+      "PowerShell(Compress-Archive *)",
+      "PowerShell(Rename-Item *)",
+      "PowerShell(Move-Item *)"
+    ]
+  }
+}
