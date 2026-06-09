@@ -14,7 +14,19 @@
 | `dist/git-save.skill` | 單獨使用存檔功能 | `/存檔`、`存檔` |
 | `dist/git-load.skill` | 單獨使用讀檔（還原版本）功能 | `/讀檔`、`讀檔`、`回到之前` |
 
+### 開發流程技能（逐步引導版）
+
+| 技能檔案 | 功能 | 觸發方式 |
+|---------|------|---------|
+| `dist/discuss.skill` | 自由討論、腦力激盪，探索想法 | `/討論` |
+| `dist/gather-requirements.skill` | 收斂討論，整理成需求清單 | `/整理需求` |
+| `dist/confirm-tasks.skill` | 產出規格與工項清單，等使用者確認才動工 | `/確認工項` |
+| `dist/start-implement.skill` | 照著確認的計劃開始實作 | `/開始實作` |
+| `dist/auto-test.skill` | 執行自動測試，驗證功能正常 | `/自動測試` |
+| `dist/code-check.skill` | Code review，找出潛在問題 | `/檢查程式` |
+
 > **建議**：直接安裝 `boss-coding.skill` 就夠了，已包含全部功能。
+> 想要更結構化的開發流程，可以另外安裝開發流程技能。
 
 ---
 
