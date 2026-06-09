@@ -10,17 +10,20 @@
 boss-codeing-skills/
 ├── CLAUDE.md          ← 你現在讀的這個檔案
 ├── README.md          ← GitHub 說明頁（給人類使用者看）
-├── src/               ← 所有技能的原始碼
-│   ├── boss-coding/   ← 組合包（整合以下三者）
-│   ├── vibe-coding/   ← 核心開發技能（被 boss-coding 引用）
-│   ├── git-save/      ← 存檔技能
-│   └── git-load/      ← 讀檔 / 版本還原技能
-│       └── SKILL.md   ← 每個技能的唯一原始檔
-└── dist/              ← 打包好的 .skill 檔案（供使用者下載）
-    ├── boss-coding.skill
-    ├── vibe-coding.skill
-    ├── git-save.skill
-    └── git-load.skill
+├── docs/              ← 給人類使用者的文件
+│   └── installation-guide.md  ← 安裝指南（Claude Code / Git / Python / Node.js）
+├── src/               ← 所有技能的原始碼，每個技能一個資料夾、內含唯一的 SKILL.md
+│   ├── boss-coding/         ← 組合包入口（整合開發 + 存檔 + 讀檔，並提供兩條路徑）
+│   ├── vibe-coding/         ← 快速路徑：描述需求 AI 直接做（被 boss-coding 引用）
+│   ├── git-save/            ← 存檔技能
+│   ├── git-load/            ← 讀檔 / 版本還原技能（永不丟資料）
+│   ├── discuss/             ← 結構化路徑①：自由討論、腦力激盪
+│   ├── gather-requirements/ ← 結構化路徑②：收斂成需求清單
+│   ├── confirm-tasks/       ← 結構化路徑③：產出工項計劃，HARD GATE 等確認
+│   ├── start-implement/     ← 結構化路徑④：照計劃實作（TDD / 系統性除錯 / 完成前驗證）
+│   ├── auto-test/           ← 結構化路徑⑤：執行自動測試驗證
+│   └── code-check/          ← 結構化路徑⑥：code review，分級回報
+└── dist/              ← 打包好的 .skill 檔案（供使用者下載，共 10 個，與 src 一一對應）
 ```
 
 ---
@@ -29,10 +32,38 @@ boss-codeing-skills/
 
 | 技能 | 原始碼 | 功能 |
 |------|--------|------|
-| `boss-coding` | `src/boss-coding/SKILL.md` | 組合包入口，整合開發 + 存檔 + 讀檔 |
-| `vibe-coding` | `src/vibe-coding/SKILL.md` | 使用者描述需求，AI 直接做出來 |
+| `boss-coding` | `src/boss-coding/SKILL.md` | 組合包入口，整合開發 + 存檔 + 讀檔，提供快速與結構化兩條路徑 |
+| `vibe-coding` | `src/vibe-coding/SKILL.md` | 快速路徑：使用者描述需求，AI 直接做出來 |
 | `git-save` | `src/git-save/SKILL.md` | 白話中文存檔（git commit 封裝） |
-| `git-load` | `src/git-load/SKILL.md` | 白話中文版本還原（git checkout 封裝） |
+| `git-load` | `src/git-load/SKILL.md` | 白話中文版本還原（永不丟資料：先備份再以新存檔取回舊版） |
+| `discuss` | `src/discuss/SKILL.md` | 自由討論、腦力激盪（蘇格拉底式引導，不實作） |
+| `gather-requirements` | `src/gather-requirements/SKILL.md` | 收斂討論成結構化需求清單 |
+| `confirm-tasks` | `src/confirm-tasks/SKILL.md` | 產出工項計劃與驗證方式，HARD GATE 等使用者確認 |
+| `start-implement` | `src/start-implement/SKILL.md` | 照確認的計劃實作（TDD / 系統性除錯 / worktree / 完成前驗證） |
+| `auto-test` | `src/auto-test/SKILL.md` | 偵測測試框架、執行測試、白話回報 |
+| `code-check` | `src/code-check/SKILL.md` | code review，依嚴重度（紅/黃/綠）分級回報 |
+
+### superpowers 階段 ↔ 技能對應
+
+結構化路徑就是 superpowers 七階段工作流的白話化封裝，各階段之間有閘門：
+
+```
+/討論 → /整理需求 → /確認工項 →（HARD GATE）→ /開始實作 → /自動測試 → /檢查程式 → 存檔
+brainstorm  收斂        plan+確認                TDD實作      verify      review     完成
+```
+
+| superpowers 階段 | 本專案技能 |
+|------------------|-----------|
+| Brainstorming（蘇格拉底式探索） | `discuss` |
+| Planning（收斂想法） | `gather-requirements` |
+| Planning（拆任務、明確路徑、驗證步驟） | `confirm-tasks` |
+| Worktree + TDD + 實作 | `start-implement` |
+| Verification | `auto-test` |
+| Code Review（嚴重度分級） | `code-check` |
+| 完成 / 存檔 | `git-save` |
+
+**閘門原則**：`confirm-tasks` 產出計劃後，使用者未明確確認前不得進入 `start-implement`；
+`start-implement` 未完成前驗證前不得回報「做好了」。
 
 ---
 
@@ -105,19 +136,33 @@ git worktree remove .worktrees/<feature-name>
     └── SKILL.md
 ```
 
-### 打包指令（Windows PowerShell）
+> ⚠️ **路徑分隔符必須是正斜線 `/`**。ZIP 規格規定條目路徑用 `/`；用反斜線 `\` 的條目
+> 不符規格，嚴格的解壓器或非 Windows 環境可能把 `<name>\SKILL.md` 當成一個扁平檔名而裝不起來。
 
-```powershell
-cd src
-Compress-Archive -Path "<name>" -DestinationPath "../dist/<name>.skill.zip" -Force
-cmd /c rename "..\dist\<name>.skill.zip" "<name>.skill"
+### 標準打包法（跨平台、保證正斜線）— Python
+
+這是**唯一建議**的打包方式，在任何平台都產出正斜線條目：
+
+```bash
+python - "<name>" <<'PY'
+import sys, zipfile, pathlib
+name = sys.argv[1]
+src = pathlib.Path("src") / name / "SKILL.md"
+out = pathlib.Path("dist") / f"{name}.skill"
+with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
+    z.write(src, f"{name}/SKILL.md")   # 永遠用正斜線
+print("packed", out)
+PY
 ```
 
-### 打包指令（bash，需要 zip）
+### 替代法（bash，需要 zip）
 
 ```bash
 cd src && zip -r "../dist/<name>.skill" "<name>/"
 ```
+
+> ❌ **不要用** PowerShell `Compress-Archive`：在 Windows 上它會產出反斜線條目（`<name>\SKILL.md`），
+> 不符 ZIP 規格。若已用它打包，請改用上方 Python 法重打。
 
 ---
 
